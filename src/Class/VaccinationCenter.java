@@ -23,16 +23,17 @@ public class VaccinationCenter {
      */
     public static void main(String[] args) {
         Booth[] booth = new Booth[6];
-        initialise(); // Invoke initialise method
+        initialise(booth); // Invoke initialise method
         mainMenu(); // Invoke MainMenuRender Method
     }
 
     /**
      * Initialise String array as empty beginning of the program
      */
-    private static void initialise() {
-        Patient patient = new Patient("*", "*",0,"*","*","*");
+    private static void initialise(Booth[] booth) {
+        Patient patient = new Patient("*", 0, "*", "*", "*");
         for (int i = 0; i < 6; i++) {
+            booth[i] = new Booth("*", patient);
             vaccinationBooth[i] = "*"; // add "*" as array elements
             isEditable[i] = true; // add true as array elements
         }
@@ -71,6 +72,7 @@ public class VaccinationCenter {
 
     /**
      * This Method Validates Main Menu Inputs
+     *
      * @param code User Input String
      */
     private static void mainMenuInputValidation(String code) {

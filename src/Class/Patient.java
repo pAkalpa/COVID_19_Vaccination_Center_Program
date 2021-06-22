@@ -1,20 +1,11 @@
 package Class;
 
 public class Patient {
-    private String firstName;
     private String lastName;
     private int age;
     private String City;
     private String idNumber;
     private String vaccineType;
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
 
     public String getLastName() {
         return lastName;
@@ -56,8 +47,7 @@ public class Patient {
         this.vaccineType = vaccineType;
     }
 
-    public Patient(String firstName, String lastName, int age, String city, String idNumber, String vaccineType) {
-        this.firstName = firstName;
+    public Patient(String lastName, int age, String city, String idNumber, String vaccineType) {
         this.lastName = lastName;
         this.age = age;
         City = city;
