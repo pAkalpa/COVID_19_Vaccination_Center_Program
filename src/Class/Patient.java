@@ -1,11 +1,21 @@
 package Class;
 
-public class Patient {
+import java.io.Serializable;
+
+public class Patient implements Serializable {
     private String lastName;
     private int age;
     private String City;
     private String idNumber;
     private String vaccineType;
+
+    public Patient(String lastName, int age, String city, String idNumber, String vaccineType) {
+        this.lastName = lastName;
+        this.age = age;
+        City = city;
+        this.idNumber = idNumber;
+        this.vaccineType = vaccineType;
+    }
 
     public String getLastName() {
         return lastName;
@@ -44,14 +54,6 @@ public class Patient {
     }
 
     public void setVaccineType(String vaccineType) {
-        this.vaccineType = vaccineType;
-    }
-
-    public Patient(String lastName, int age, String city, String idNumber, String vaccineType) {
-        this.lastName = lastName;
-        this.age = age;
-        City = city;
-        this.idNumber = idNumber;
         this.vaccineType = vaccineType;
     }
 }

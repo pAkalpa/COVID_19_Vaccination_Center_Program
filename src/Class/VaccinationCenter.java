@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class VaccinationCenter {
-    private static String[] vaccinationBooth = new String[6]; // Create size 6 empty String array object
+    private static Booth[] booth = new Booth[6];
     private static int vaccineCount = 150; // Center vaccine Count
     private static final Scanner scanner = new Scanner(System.in); // Create scanner object from Scanner Class
     private static boolean[] isEditable = new boolean[6]; // Create array to is booth occupied or not
@@ -22,19 +22,17 @@ public class VaccinationCenter {
      * @param args None
      */
     public static void main(String[] args) {
-        Booth[] booth = new Booth[6];
-        initialise(booth); // Invoke initialise method
+        initialise(); // Invoke initialise method
         mainMenu(); // Invoke MainMenuRender Method
     }
 
     /**
      * Initialise String array as empty beginning of the program
      */
-    private static void initialise(Booth[] booth) {
+    private static void initialise() {
         Patient patient = new Patient("*", 0, "*", "*", "*");
         for (int i = 0; i < 6; i++) {
             booth[i] = new Booth("*", patient);
-            vaccinationBooth[i] = "*"; // add "*" as array elements
             isEditable[i] = true; // add true as array elements
         }
     }
@@ -115,11 +113,11 @@ public class VaccinationCenter {
      */
     private static void viewAllBooths() {
         System.out.println("\nList of All Vaccination Booths");
-        for (int i = 0; i < 6; i++) {
-            if (vaccinationBooth[i].equals("*")) {
+        for (int i = 0; i < booth.length; i++) {
+            if (booth[i].getFirstName().equals("*")) {
                 System.out.println("Booth " + i + " is Empty"); // Show Empty Booths Only
             } else {
-                System.out.println("Booth " + i + " is occupied by " + vaccinationBooth[i]); // Show occupied booth with patient name
+                System.out.println("Booth " + i + " is occupied by " + booth[i].getFirstName()); // Show occupied booth with patient name
             }
         }
     }
@@ -130,8 +128,8 @@ public class VaccinationCenter {
     private static void viewAllEmptyBooths() {
         System.out.println("\nList of Empty Vaccination Booths");
         int emptyBoothCount = 0; // Variable to store empty booth count
-        for (int i = 0; i < vaccinationBooth.length; i++) {
-            if (vaccinationBooth[i].equals("*")) { // Check for empty booths
+        for (int i = 0; i < booth.length; i++) {
+            if (booth[i].getFirstName().equals("*")) { // Check for empty booths
                 System.out.println("Booth " + i + " is Empty");
                 emptyBoothCount++; //increment empty booth count by one
             }
@@ -146,9 +144,9 @@ public class VaccinationCenter {
      */
     private static void viewAllOccupiedBooths() {
         System.out.println("\nList of Occupied Vaccination Booths");
-        for (int i = 0; i < vaccinationBooth.length; i++) {
-            if (!vaccinationBooth[i].equals("*")) {
-                System.out.println("Booth " + i + " is occupied by " + vaccinationBooth[i]);
+        for (int i = 0; i < booth.length; i++) {
+            if (!booth[i].getFirstName().equals("*")) {
+                System.out.println("Booth " + i + " is occupied by " + booth[i].getFirstName());
             }
         }
         System.out.println(" ");
@@ -187,7 +185,7 @@ public class VaccinationCenter {
             } else if (isEditable[boothNumber]) {
                 System.out.print("Enter Patient Name for Booth " + boothNumber + " : ");
                 patientName = scanner.next();
-                vaccinationBooth[boothNumber] = patientName; // assign name to array
+                booth[boothNumber].setFirstName(patientName); // assign name to array
                 vaccineCount--; // decrease vaccine count
                 isEditable[boothNumber] = false; // assign false to make selected booth occupied
                 System.out.println("Update Successful!\n");
@@ -221,8 +219,8 @@ public class VaccinationCenter {
                 }
             } while ((boothNumber < 0) || (boothNumber > 6));
             if (boothNumber <= 5) {
-                if (!vaccinationBooth[boothNumber].equals("*")) {
-                    vaccinationBooth[boothNumber] = "*";
+                if (!booth[boothNumber].getFirstName().equals("*")) {
+                    booth[boothNumber].setFirstName("*");
                     isEditable[boothNumber] = true;
                     System.out.println("Remove Successful!");
                 } else {
@@ -242,8 +240,12 @@ public class VaccinationCenter {
         System.out.println("\nPatient Names Sorted in Alphabetical Order");
         String temporaryString;
         int occupiedBoothCount = 0;
-        int arrayLength = vaccinationBooth.length; // store length of vaccinationBooth(String[]) array
-        String[] newArray = Arrays.copyOf(vaccinationBooth, arrayLength);
+        int arrayLength = booth.length; // store length of vaccinationBooth(String[]) array
+        String[] patientNameArray = new String[arrayLength];
+        for (int i = 0; i < arrayLength; i++) {
+            patientNameArray[i] = booth[i].getFirstName();
+        }
+        String[] newArray = Arrays.copyOf(patientNameArray, arrayLength);
         for (int i = 0; i < newArray.length; i++) {
             for (int j = i + 1; j < newArray.length; j++) {
                 if (newArray[i].compareTo(newArray[j]) > 0) {
@@ -254,7 +256,7 @@ public class VaccinationCenter {
             }
         }
         for (String s : newArray) {
-            int index = Arrays.asList(vaccinationBooth).indexOf(s);
+            int index = Arrays.asList(patientNameArray).indexOf(s);
             if (!s.equals("*")) { // check for occupied booths
                 System.out.println(s + " (Booth NO " + index + ")");
                 occupiedBoothCount++;
@@ -285,7 +287,7 @@ public class VaccinationCenter {
             ObjectOutputStream saveFile = new ObjectOutputStream(saveDataFile); // create new ObjectOutputStream object and parse saveDataFile object as argument
 
             saveFile.writeInt(vaccineCount); // write vaccine count to file
-            saveFile.writeObject(vaccinationBooth); // write vaccinationBooth(String[]) array to file
+            saveFile.writeObject(booth); // write vaccinationBooth(String[]) array to file
             saveFile.writeObject(isEditable); // write isEditable(boolean[]) array to file
 
             System.out.println("File Saved Successfully!");
@@ -334,7 +336,7 @@ public class VaccinationCenter {
                 ObjectInputStream savedFile = new ObjectInputStream(savedDataFile); // Create new ObjectInputStream object and parse savedDataFile object as argument
 
                 vaccineCount = savedFile.readInt(); // Read vaccine Count from file
-                vaccinationBooth = (String[]) (savedFile.readObject()); // Read vaccinationBooth(String[]) array from file
+                booth =  (Booth[]) savedFile.readObject(); // Read vaccinationBooth(String[]) array from file
                 isEditable = (boolean[]) savedFile.readObject(); // Read isEditable(boolean[]) array from file
 
                 System.out.println("File Loaded Successfully!");
@@ -411,7 +413,11 @@ public class VaccinationCenter {
         int trueCount = 0;
         int falseCount = 0;
         char returnChar = ' ';
-        for (String s : VaccinationCenter.vaccinationBooth) {
+        String[] patientNameArray = new String[booth.length];
+        for (int i = 0; i < booth.length; i++) {
+            patientNameArray[i] = booth[i].getFirstName();
+        }
+        for (String s : patientNameArray) {
             if (s.equals("*")) {
                 trueCount++;
             } else {

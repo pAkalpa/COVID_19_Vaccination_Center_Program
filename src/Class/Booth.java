@@ -1,6 +1,8 @@
 package Class;
 
-public class Booth {
+import java.io.Serializable;
+
+public class Booth implements Serializable {
     private String firstName;
     private Patient patient;
 
@@ -9,12 +11,12 @@ public class Booth {
         this.patient = patient;
     }
 
-    public String getPatientName() {
+    public String getFirstName() {
         return firstName;
     }
 
-    public void setPatientName(String patientName) {
-        this.firstName = patientName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public Patient getPatient() {
