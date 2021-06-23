@@ -3,26 +3,26 @@ package Class;
 import java.io.Serializable;
 
 public class Patient implements Serializable {
-    private String lastName;
+    private String surname;
     private int age;
     private String City;
     private String idNumber;
-    private String vaccineType;
+    private int vaccineType;
 
-    public Patient(String lastName, int age, String city, String idNumber, String vaccineType) {
-        this.lastName = lastName;
+    public Patient(String surname, int age, String city, String idNumber, int vaccineType) {
+        this.surname = surname;
         this.age = age;
         City = city;
         this.idNumber = idNumber;
         this.vaccineType = vaccineType;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public int getAge() {
@@ -49,11 +49,11 @@ public class Patient implements Serializable {
         this.idNumber = idNumber;
     }
 
-    public String getVaccineType() {
+    public int getVaccineType() {
         return vaccineType;
     }
 
-    public void setVaccineType(String vaccineType) {
+    public void setVaccineType(int vaccineType) {
         this.vaccineType = vaccineType;
     }
 }

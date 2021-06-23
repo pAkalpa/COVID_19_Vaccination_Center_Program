@@ -30,7 +30,7 @@ public class VaccinationCenter {
      * Initialise String array as empty beginning of the program
      */
     private static void initialise() {
-        Patient patient = new Patient("*", 0, "*", "*", "*");
+        Patient patient = new Patient("*", 0, "*", "*", 0);
         for (int i = 0; i < 6; i++) {
             booth[i] = new Booth("*", patient);
             isEditable[i] = true; // add true as array elements
@@ -158,7 +158,7 @@ public class VaccinationCenter {
     private static void addPatient() {
         while (true) {
             int boothNumber;
-            String patientName;
+
             char returnChar = boothChecker(); // invoke boothChecker Method and store return value
             if (returnChar == 'N') {
                 System.out.println("All booths Are Occupied!\nTry Removing Assigned Patient using Option in Main Menu -> Remove Patient from a Booth");
@@ -183,9 +183,8 @@ public class VaccinationCenter {
                 System.out.println("No! Vaccines Remaining. Restock Required!\n\n");
                 break;
             } else if (isEditable[boothNumber]) {
-                System.out.print("Enter Patient Name for Booth " + boothNumber + " : ");
-                patientName = scanner.next();
-                booth[boothNumber].setFirstName(patientName); // assign name to array
+                booth[boothNumber] = addPatientDetails(boothNumber);
+
                 vaccineCount--; // decrease vaccine count
                 isEditable[boothNumber] = false; // assign false to make selected booth occupied
                 System.out.println("Update Successful!\n");
@@ -430,5 +429,54 @@ public class VaccinationCenter {
             returnChar = 'N';
         }
         return returnChar;
+    }
+
+    private static Booth addPatientDetails(int boothNumber) {
+        String firstName;
+        String Surname;
+        int age;
+        String city;
+        String idNumber;
+        int vaccineType;
+
+        System.out.print("Enter Patient's First Name for Booth " + boothNumber + ": ");
+        firstName = scanner.next();
+
+        System.out.print("Enter Patient's Surname for Booth " + boothNumber + ": ");
+        Surname = scanner.next();
+
+        do {
+            System.out.print("Enter Patient's Age for Booth " + boothNumber + ": ");
+            while(!scanner.hasNextInt()) {
+                System.out.print("Invalid Input! Try Again.\nEnter Patient's Age for Booth " + boothNumber + ": ");
+                scanner.next();
+            }
+            age = scanner.nextInt();
+            if (age < 0 || age > 110) {
+                System.out.println("Invalid Input! Try Again.");
+            }
+        } while (age < 0 || age > 110);
+
+        System.out.print("Enter Patient's Current Living City for Booth " + boothNumber + ": ");
+        city = scanner.next();
+
+        System.out.print("Enter Patient's NIC or Passport Number for Booth " + boothNumber + ": ");
+        idNumber = scanner.next();
+
+        System.out.println("Request Vaccine Type\n[1] AstraZeneca\n[2] Sinopharm\n[3] Pfizer");
+        do {
+            System.out.print("Enter Vaccine Type Number (1 - 3): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid Input! Try Again.\nEnter Vaccine Type Number (1 - 3): ");
+                scanner.next();
+            }
+            vaccineType = scanner.nextInt();
+            if (vaccineType < 1 || vaccineType > 3) {
+                System.out.println("Invalid Input! Try Again.");
+            }
+        } while (vaccineType < 1 || vaccineType > 3);
+
+        Patient patient = new Patient(Surname, age, city, idNumber, vaccineType);
+        return new Booth(firstName,patient);
     }
 }
