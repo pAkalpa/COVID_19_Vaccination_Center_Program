@@ -69,6 +69,7 @@ public class VaccinationCenter {
 
     /**
      * This Method Validates Main Menu Inputs
+     *
      * @param code User Input String
      */
     private static void mainMenuInputValidation(String code) {
