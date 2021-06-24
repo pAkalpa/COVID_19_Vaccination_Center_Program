@@ -4,10 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class VaccinationCenter {
     private static Booth[] booth = new Booth[6];
@@ -15,6 +12,10 @@ public class VaccinationCenter {
     private static final Scanner scanner = new Scanner(System.in); // Create scanner object from Scanner Class
     private static boolean[] isEditable = new boolean[6]; // Create array to is booth occupied or not
     private static boolean isValid = true; // loop control variable of mainMenu method
+    private static LinkedList<Booth> waitingList1 = new LinkedList<>();
+    private static LinkedList<Booth> waitingList2 = new LinkedList<>();
+    private static LinkedList<Booth> waitingList3 = new LinkedList<>();
+
 
     /**
      * Main Method Invoke two methods
@@ -156,42 +157,130 @@ public class VaccinationCenter {
      * This Method Add Patient to Array
      */
     private static void addPatient() {
+        String option;
+        boolean flag;
         while (true) {
-            int boothNumber;
+            char returnChar = boothChecker();
 
-            char returnChar = boothChecker(); // invoke boothChecker Method and store return value
-            if (returnChar == 'N') {
-                System.out.println("All booths Are Occupied!\nTry Removing Assigned Patient using Option in Main Menu -> Remove Patient from a Booth");
-                break;
-            }
-            viewAllEmptyBooths(); // invoke viewAllEmptyBooths method
-            do { // this loop validates user input
-                System.out.print("Enter Booth Number (0 - 5) to Add Patient or 6 to go back to Main Menu: ");
-                while (!scanner.hasNextInt()) {
-                    System.out.print("Invalid Input! Try Again.\nEnter Booth Number (0 - 5) or 6 to go back to Main Menu: ");
-                    scanner.next();
-                }
-                boothNumber = scanner.nextInt();
-                if (boothNumber > 6 || boothNumber < 0) {
-                    System.out.println("Invalid Input! Try Again.");
-                }
-            } while ((boothNumber < 0) || (boothNumber > 6));
-            if (boothNumber == 6) {
-                System.out.println("Back to Main Menu....");
-                break;
-            } else if (vaccineCount == 0) {
+            if (vaccineCount == 0) {
                 System.out.println("No! Vaccines Remaining. Restock Required!\n\n");
                 break;
-            } else if (isEditable[boothNumber]) {
-                booth[boothNumber] = addPatientDetails(boothNumber);
+            }
 
-                vaccineCount--; // decrease vaccine count
-                isEditable[boothNumber] = false; // assign false to make selected booth occupied
-                System.out.println("Update Successful!\n");
-            } else {
-                System.out.println("Patient already Assigned to Booth No: " + boothNumber + ". wait until Assigned Patient get Vaccinated.\nOr Try Removing Assigned Patient using Option in Main Menu -> Remove Patient from a Booth\n");
+            viewAllEmptyBooths();
+            addPatientDetails();
+
+            if (returnChar == 'N') {
+                System.out.println("All booths Are Occupied!\tNew Patients Will be Added to Waiting List");
+                do {
+                    String inputPattern = "[YN]+";
+                    System.out.print("Do You Want to add Another Person?(Y/n) ");
+                    option = scanner.next().toUpperCase();
+                    flag = option.matches(inputPattern);
+                    if (!flag) System.out.println("Invalid Input! Try Again.");
+                } while (!flag);
+                if (option.equals("N")) {
+                    break;
+                }
+            } else if (returnChar == 'Y') {
+                do {
+                    String inputPattern = "[YN]+";
+                    System.out.print("\nDo You Want to Go back to Main Menu?(Y/n) ");
+                    option = scanner.next().toUpperCase();
+                    flag = option.matches(inputPattern);
+                    if (!flag) System.out.println("Invalid Input! Try Again.");
+                } while (!flag);
+                if (option.equals("Y")) {
+                    break;
+                }
             }
         }
+        System.out.println("Back to Main Menu....");
+    }
+
+    private static void addPatientDetails() {
+        String firstName;
+        String Surname;
+        int age;
+        String city;
+        String idNumber;
+        int vaccineType;
+
+        System.out.print("Enter Patient's First Name: ");
+        firstName = scanner.next();
+
+        System.out.print("Enter Patient's Surname: ");
+        Surname = scanner.next();
+
+        do {
+            System.out.print("Enter Patient's Age: ");
+            while (!scanner.hasNextInt()) {
+                System.out.print("Invalid Input! Try Again.\nEnter Patient's Age: ");
+                scanner.next();
+            }
+            age = scanner.nextInt();
+            if (age < 0 || age > 110) {
+                System.out.println("Invalid Input! Try Again.");
+            }
+        } while (age < 0 || age > 110);
+
+        System.out.print("Enter Patient's Current Living City: ");
+        city = scanner.next();
+
+        System.out.print("Enter Patient's NIC or Passport Number: ");
+        idNumber = scanner.next();
+
+        System.out.println("Request Vaccine\n[1] AstraZeneca\n[2] Sinopharm\n[3] Pfizer");
+        do {
+            System.out.print("Enter Vaccine Type Number (1 - 3): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid Input! Try Again.\nEnter Vaccine Type Number (1 - 3): ");
+                scanner.next();
+            }
+            vaccineType = scanner.nextInt();
+            if (vaccineType < 1 || vaccineType > 3) {
+                System.out.println("Invalid Input! Try Again.");
+            }
+        } while (vaccineType < 1 || vaccineType > 3);
+
+        vaccineCount--;
+        Patient patient = new Patient(Surname, age, city, idNumber, vaccineType);
+
+        if (vaccineType == 1) {
+            if (isEditable[0]) {
+                booth[0] = new Booth(firstName,patient);
+                isEditable[0] = false;
+            } else if (isEditable[1]) {
+                booth[1] = new Booth(firstName,patient);
+                isEditable[1] = false;
+            } else {
+                System.out.println("Booth 0 and 1 are Occupied!\nAdding Patient to Waiting List 1\n");
+                waitingList1.add(new Booth(firstName, patient));
+            }
+        } else if (vaccineType == 2) {
+            if (isEditable[2]) {
+                booth[2] = new Booth(firstName, patient);
+                isEditable[2] = false;
+            } else if (isEditable[3]) {
+                booth[3] = new Booth(firstName, patient);
+                isEditable[3] = false;
+            } else {
+                System.out.println("Booth 2 and 3 are Occupied!\nAdding Patient to Waiting List 2\n");
+                waitingList2.add(new Booth(firstName, patient));
+            }
+        } else {
+            if (isEditable[4]) {
+                booth[4] = new Booth(firstName, patient);
+                isEditable[4] = false;
+            } else if (isEditable[5]) {
+                booth[5] = new Booth(firstName, patient);
+                isEditable[5] = false;
+            } else {
+                System.out.println("Booth 4 and 5 are Occupied!\nAdding Patient to Waiting List 3\n");
+                waitingList3.add(new Booth(firstName, patient));
+            }
+        }
+        System.out.println("Patient Added Successfully!");
     }
 
     /**
@@ -222,6 +311,22 @@ public class VaccinationCenter {
                     booth[boothNumber].setFirstName("*");
                     isEditable[boothNumber] = true;
                     System.out.println("Remove Successful!");
+                    if (waitingList1.size() != 0 && (boothNumber == 0 || boothNumber == 1)) {
+                        System.out.println("Patient auto assigned from Waiting List 1 to Booth No " + boothNumber);
+                        booth[boothNumber] = waitingList1.getFirst();
+                        isEditable[boothNumber] = false;
+                        waitingList1.removeFirst();
+                    } else if (waitingList2.size() != 0 && (boothNumber == 2 || boothNumber == 3)) {
+                        System.out.println("Patient auto assigned from Waiting List 2 to Booth No " + boothNumber);
+                        booth[boothNumber] = waitingList2.getFirst();
+                        isEditable[boothNumber] = false;
+                        waitingList2.removeFirst();
+                    } else if (waitingList3.size() !=0 && (boothNumber == 4 || boothNumber == 5)) {
+                        System.out.println("Patient auto assigned from Waiting List 3 to Booth No " + boothNumber);
+                        booth[boothNumber] = waitingList3.getFirst();
+                        isEditable[boothNumber] = false;
+                        waitingList3.removeFirst();
+                    }
                 } else {
                     System.out.println("Selected Booth is Already Empty");
                 }
@@ -242,7 +347,7 @@ public class VaccinationCenter {
         int arrayLength = booth.length; // store length of vaccinationBooth(String[]) array
         String[] patientNameArray = new String[arrayLength];
         for (int i = 0; i < arrayLength; i++) {
-            patientNameArray[i] = booth[i].getFirstName();
+            patientNameArray[i] = booth[i].getFirstName().substring(0,1).toUpperCase() + booth[i].getFirstName().substring(1);
         }
         String[] newArray = Arrays.copyOf(patientNameArray, arrayLength);
         for (int i = 0; i < newArray.length; i++) {
@@ -288,6 +393,9 @@ public class VaccinationCenter {
             saveFile.writeInt(vaccineCount); // write vaccine count to file
             saveFile.writeObject(booth); // write vaccinationBooth(String[]) array to file
             saveFile.writeObject(isEditable); // write isEditable(boolean[]) array to file
+            saveFile.writeObject(waitingList1);
+            saveFile.writeObject(waitingList2);
+            saveFile.writeObject(waitingList3);
 
             System.out.println("File Saved Successfully!");
         } catch (Exception e) {
@@ -335,8 +443,12 @@ public class VaccinationCenter {
                 ObjectInputStream savedFile = new ObjectInputStream(savedDataFile); // Create new ObjectInputStream object and parse savedDataFile object as argument
 
                 vaccineCount = savedFile.readInt(); // Read vaccine Count from file
-                booth =  (Booth[]) savedFile.readObject(); // Read vaccinationBooth(String[]) array from file
+                booth = (Booth[]) savedFile.readObject(); // Read vaccinationBooth(String[]) array from file
                 isEditable = (boolean[]) savedFile.readObject(); // Read isEditable(boolean[]) array from file
+                waitingList1 = (LinkedList<Booth>) savedFile.readObject();
+                waitingList2 = (LinkedList<Booth>) savedFile.readObject();
+                waitingList3 = (LinkedList<Booth>) savedFile.readObject();
+
 
                 System.out.println("File Loaded Successfully!");
             }
@@ -356,9 +468,9 @@ public class VaccinationCenter {
             viewRemainingVaccines();
             if (!(vaccineCount == 150)) {
                 do { // this loop validate user input
-                    System.out.print("Enter Restock Amount: ");
+                    System.out.print("Enter Restock Amount or 0 to go back: ");
                     while (!scanner.hasNextInt()) {
-                        System.out.print("Invalid Input! Try Again.\nEnter Restock Amount: ");
+                        System.out.print("Invalid Input! Try Again.\nEnter Restock Amount or 0 to go back: ");
                         scanner.next();
                     }
                     restock = scanner.nextInt();
@@ -370,7 +482,11 @@ public class VaccinationCenter {
                     System.out.println("Vaccination Center Store Capacity Overloaded!\nCannot Store More than 150 Vaccines\n");
                 } else {
                     vaccineCount += restock;
-                    System.out.println("Stock Update Successful.\nVaccination Count: " + vaccineCount + "\n\n");
+                    if (restock == 0) {
+                        System.out.println("Back to Main Menu...");
+                    } else {
+                        System.out.println("Stock Update Successful.\nVaccination Count: " + vaccineCount + "\n\n");
+                    }
                     break;
                 }
             } else {
@@ -384,7 +500,7 @@ public class VaccinationCenter {
      * This Method Prints Remaining Vaccine Count
      */
     private static void viewRemainingVaccines() {
-        System.out.println("Vaccine Stock Summary");
+        System.out.println("\nVaccine Stock Summary");
         int requiredVaccineCount = 150 - vaccineCount;
         System.out.println("Vaccination Center Vaccine Capacity: 150 Vaccines\nVaccines Remaining: " + vaccineCount + " Vaccines\nVaccines Required: " + requiredVaccineCount + " Vaccines");
     }
@@ -429,54 +545,5 @@ public class VaccinationCenter {
             returnChar = 'N';
         }
         return returnChar;
-    }
-
-    private static Booth addPatientDetails(int boothNumber) {
-        String firstName;
-        String Surname;
-        int age;
-        String city;
-        String idNumber;
-        int vaccineType;
-
-        System.out.print("Enter Patient's First Name for Booth " + boothNumber + ": ");
-        firstName = scanner.next();
-
-        System.out.print("Enter Patient's Surname for Booth " + boothNumber + ": ");
-        Surname = scanner.next();
-
-        do {
-            System.out.print("Enter Patient's Age for Booth " + boothNumber + ": ");
-            while(!scanner.hasNextInt()) {
-                System.out.print("Invalid Input! Try Again.\nEnter Patient's Age for Booth " + boothNumber + ": ");
-                scanner.next();
-            }
-            age = scanner.nextInt();
-            if (age < 0 || age > 110) {
-                System.out.println("Invalid Input! Try Again.");
-            }
-        } while (age < 0 || age > 110);
-
-        System.out.print("Enter Patient's Current Living City for Booth " + boothNumber + ": ");
-        city = scanner.next();
-
-        System.out.print("Enter Patient's NIC or Passport Number for Booth " + boothNumber + ": ");
-        idNumber = scanner.next();
-
-        System.out.println("Request Vaccine Type\n[1] AstraZeneca\n[2] Sinopharm\n[3] Pfizer");
-        do {
-            System.out.print("Enter Vaccine Type Number (1 - 3): ");
-            while (!scanner.hasNextInt()) {
-                System.out.println("Invalid Input! Try Again.\nEnter Vaccine Type Number (1 - 3): ");
-                scanner.next();
-            }
-            vaccineType = scanner.nextInt();
-            if (vaccineType < 1 || vaccineType > 3) {
-                System.out.println("Invalid Input! Try Again.");
-            }
-        } while (vaccineType < 1 || vaccineType > 3);
-
-        Patient patient = new Patient(Surname, age, city, idNumber, vaccineType);
-        return new Booth(firstName,patient);
     }
 }
