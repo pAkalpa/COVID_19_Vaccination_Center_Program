@@ -209,7 +209,7 @@ public class VaccinationCenter {
         String idNumber;
         int vaccineType;
 
-        System.out.print("Enter Patient's First Name: ");
+        System.out.print("\nEnter Patient's First Name: ");
         firstName = scanner.next();
 
         System.out.print("Enter Patient's Surname: ");
