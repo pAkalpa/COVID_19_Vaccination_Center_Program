@@ -198,6 +198,9 @@ public class VaccinationCenter {
         System.out.println("Back to Main Menu....");
     }
 
+    /**
+     * This Method Take Patient Details and Store
+     */
     private static void addPatientDetails() {
         String firstName;
         String Surname;
@@ -254,7 +257,7 @@ public class VaccinationCenter {
                 booth[1] = new Booth(firstName,patient);
                 isEditable[1] = false;
             } else {
-                System.out.println("Booth 0 and 1 are Occupied!\nAdding Patient to Waiting List 1\n");
+                System.out.println("Booth 0 and 1 are Occupied!\nAdding Patient to Waiting List 1");
                 waitingList1.add(new Booth(firstName, patient));
             }
         } else if (vaccineType == 2) {
@@ -265,7 +268,7 @@ public class VaccinationCenter {
                 booth[3] = new Booth(firstName, patient);
                 isEditable[3] = false;
             } else {
-                System.out.println("Booth 2 and 3 are Occupied!\nAdding Patient to Waiting List 2\n");
+                System.out.println("Booth 2 and 3 are Occupied!\nAdding Patient to Waiting List 2");
                 waitingList2.add(new Booth(firstName, patient));
             }
         } else {
@@ -276,11 +279,11 @@ public class VaccinationCenter {
                 booth[5] = new Booth(firstName, patient);
                 isEditable[5] = false;
             } else {
-                System.out.println("Booth 4 and 5 are Occupied!\nAdding Patient to Waiting List 3\n");
+                System.out.println("Booth 4 and 5 are Occupied!\nAdding Patient to Waiting List 3");
                 waitingList3.add(new Booth(firstName, patient));
             }
         }
-        System.out.println("Patient Added Successfully!");
+        System.out.println("Patient Added Successfully!\n");
     }
 
     /**
