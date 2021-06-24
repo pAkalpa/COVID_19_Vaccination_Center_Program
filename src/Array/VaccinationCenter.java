@@ -351,9 +351,9 @@ public class VaccinationCenter {
             viewRemainingVaccines();
             if (!(vaccineCount == 150)) {
                 do { // this loop validate user input
-                    System.out.print("Enter Restock Amount: ");
+                    System.out.print("Enter Restock Amount or 0 to go back: ");
                     while (!scanner.hasNextInt()) {
-                        System.out.print("Invalid Input! Try Again.\nEnter Restock Amount: ");
+                        System.out.print("Invalid Input! Try Again.\nEnter Restock Amount or 0 to go back: ");
                         scanner.next();
                     }
                     restock = scanner.nextInt();
@@ -365,7 +365,11 @@ public class VaccinationCenter {
                     System.out.println("Vaccination Center Store Capacity Overloaded!\nCannot Store More than 150 Vaccines\n");
                 } else {
                     vaccineCount += restock;
-                    System.out.println("Stock Update Successful.\nVaccination Count: " + vaccineCount + "\n\n");
+                    if (restock == 0) {
+                        System.out.println("Back to Main Menu...");
+                    } else {
+                        System.out.println("Stock Update Successful.\nVaccination Count: " + vaccineCount + "\n\n");
+                    }
                     break;
                 }
             } else {
