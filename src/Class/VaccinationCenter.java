@@ -12,9 +12,9 @@ public class VaccinationCenter {
     private static final Scanner scanner = new Scanner(System.in); // Create scanner object from Scanner Class
     private static boolean[] isEditable = new boolean[6]; // Create array to is booth occupied or not
     private static boolean isValid = true; // loop control variable of mainMenu method
-    private static LinkedList<Booth> waitingList1 = new LinkedList<>();
-    private static LinkedList<Booth> waitingList2 = new LinkedList<>();
-    private static LinkedList<Booth> waitingList3 = new LinkedList<>();
+    private static LinkedList<Booth> waitingList1 = new LinkedList<>(); // booth 0 & 1 WaitingList (Linked List)
+    private static LinkedList<Booth> waitingList2 = new LinkedList<>(); // booth 2 & 3 WaitingList (Linked List)
+    private static LinkedList<Booth> waitingList3 = new LinkedList<>(); // booth 4 & 5 WaitingList (Linked List)
 
 
     /**
@@ -160,20 +160,20 @@ public class VaccinationCenter {
         String option;
         boolean flag;
         while (true) {
-            char returnChar = boothChecker();
+            char returnChar = boothChecker(); // invoke boothChecker method and store return value
 
-            if (vaccineCount == 0) {
+            if (vaccineCount == 0) { // check for vaccine count == 0
                 System.out.println("No! Vaccines Remaining. Restock Required!\n\n");
                 break;
             }
 
-            viewAllEmptyBooths();
-            addPatientDetails();
+            viewAllEmptyBooths(); // invoke viewAllEmptyBooths Method
+            addPatientDetails(); // invoke addPatientDetails Method
 
             if (returnChar == 'N') {
                 System.out.println("All booths Are Occupied!\tNew Patients Will be Added to Waiting List");
-                do {
-                    String inputPattern = "[YN]+";
+                do { // this loop validates user input
+                    String inputPattern = "[YN]+"; // valid user input as regex expression
                     System.out.print("Do You Want to add Another Person?(Y/n) ");
                     option = scanner.next().toUpperCase();
                     flag = option.matches(inputPattern);
@@ -183,7 +183,7 @@ public class VaccinationCenter {
                     break;
                 }
             } else if (returnChar == 'Y') {
-                do {
+                do { // this loop validates user input
                     String inputPattern = "[YN]+";
                     System.out.print("\nDo You Want to Go back to Main Menu?(Y/n) ");
                     option = scanner.next().toUpperCase();
@@ -215,7 +215,7 @@ public class VaccinationCenter {
         System.out.print("Enter Patient's Surname: ");
         Surname = scanner.next();
 
-        do {
+        do { // validates Patients Age in given range and valid
             System.out.print("Enter Patient's Age: ");
             while (!scanner.hasNextInt()) {
                 System.out.print("Invalid Input! Try Again.\nEnter Patient's Age: ");
@@ -234,7 +234,7 @@ public class VaccinationCenter {
         idNumber = scanner.next();
 
         System.out.println("Request Vaccine\n[1] AstraZeneca\n[2] Sinopharm\n[3] Pfizer");
-        do {
+        do { // validates user input 1 to 3
             System.out.print("Enter Vaccine Type Number (1 - 3): ");
             while (!scanner.hasNextInt()) {
                 System.out.println("Invalid Input! Try Again.\nEnter Vaccine Type Number (1 - 3): ");
@@ -246,41 +246,41 @@ public class VaccinationCenter {
             }
         } while (vaccineType < 1 || vaccineType > 3);
 
-        vaccineCount--;
-        Patient patient = new Patient(Surname, age, city, idNumber, vaccineType);
+        vaccineCount--; // subtract 1 from vaccine count for each successful user adding
+        Patient patient = new Patient(Surname, age, city, idNumber, vaccineType); // create new Patient object
 
-        if (vaccineType == 1) {
+        if (vaccineType == 1) { // validate vaccine type and auto assign user to booth 0 or 1
             if (isEditable[0]) {
-                booth[0] = new Booth(firstName,patient);
+                booth[0] = new Booth(firstName,patient); // add patient to booth 0
                 isEditable[0] = false;
             } else if (isEditable[1]) {
-                booth[1] = new Booth(firstName,patient);
+                booth[1] = new Booth(firstName,patient); // add patient to booth 1
                 isEditable[1] = false;
             } else {
                 System.out.println("Booth 0 and 1 are Occupied!\nAdding Patient to Waiting List 1");
-                waitingList1.add(new Booth(firstName, patient));
+                waitingList1.add(new Booth(firstName, patient)); // add patient to the waitingList 1
             }
-        } else if (vaccineType == 2) {
+        } else if (vaccineType == 2) { // validate vaccine type and auto assign user to booth 2 or 3
             if (isEditable[2]) {
-                booth[2] = new Booth(firstName, patient);
+                booth[2] = new Booth(firstName, patient); // add patient to booth 2
                 isEditable[2] = false;
             } else if (isEditable[3]) {
-                booth[3] = new Booth(firstName, patient);
+                booth[3] = new Booth(firstName, patient); // add patient to booth 3
                 isEditable[3] = false;
             } else {
                 System.out.println("Booth 2 and 3 are Occupied!\nAdding Patient to Waiting List 2");
-                waitingList2.add(new Booth(firstName, patient));
+                waitingList2.add(new Booth(firstName, patient)); // add patient to the waitingList 2
             }
         } else {
-            if (isEditable[4]) {
-                booth[4] = new Booth(firstName, patient);
+            if (isEditable[4]) { // validate vaccine type and auto assign user to booth 4 or 5
+                booth[4] = new Booth(firstName, patient); // add patient to booth 4
                 isEditable[4] = false;
             } else if (isEditable[5]) {
-                booth[5] = new Booth(firstName, patient);
+                booth[5] = new Booth(firstName, patient); // add patient to booth 5
                 isEditable[5] = false;
             } else {
                 System.out.println("Booth 4 and 5 are Occupied!\nAdding Patient to Waiting List 3");
-                waitingList3.add(new Booth(firstName, patient));
+                waitingList3.add(new Booth(firstName, patient)); // add patient to the waitingList 3
             }
         }
         System.out.println("Patient Added Successfully!\n");
@@ -314,17 +314,17 @@ public class VaccinationCenter {
                     booth[boothNumber].setFirstName("*");
                     isEditable[boothNumber] = true;
                     System.out.println("Remove Successful!");
-                    if (waitingList1.size() != 0 && (boothNumber == 0 || boothNumber == 1)) {
+                    if (waitingList1.size() != 0 && (boothNumber == 0 || boothNumber == 1)) { // auto assign patient to booth from waiting list 1
                         System.out.println("Patient auto assigned from Waiting List 1 to Booth No " + boothNumber);
                         booth[boothNumber] = waitingList1.getFirst();
                         isEditable[boothNumber] = false;
                         waitingList1.removeFirst();
-                    } else if (waitingList2.size() != 0 && (boothNumber == 2 || boothNumber == 3)) {
+                    } else if (waitingList2.size() != 0 && (boothNumber == 2 || boothNumber == 3)) { // auto assign patient to booth from waiting list 2
                         System.out.println("Patient auto assigned from Waiting List 2 to Booth No " + boothNumber);
                         booth[boothNumber] = waitingList2.getFirst();
                         isEditable[boothNumber] = false;
                         waitingList2.removeFirst();
-                    } else if (waitingList3.size() !=0 && (boothNumber == 4 || boothNumber == 5)) {
+                    } else if (waitingList3.size() !=0 && (boothNumber == 4 || boothNumber == 5)) { // auto assign patient to booth from waiting list 3
                         System.out.println("Patient auto assigned from Waiting List 3 to Booth No " + boothNumber);
                         booth[boothNumber] = waitingList3.getFirst();
                         isEditable[boothNumber] = false;
@@ -396,9 +396,9 @@ public class VaccinationCenter {
             saveFile.writeInt(vaccineCount); // write vaccine count to file
             saveFile.writeObject(booth); // write vaccinationBooth(String[]) array to file
             saveFile.writeObject(isEditable); // write isEditable(boolean[]) array to file
-            saveFile.writeObject(waitingList1);
-            saveFile.writeObject(waitingList2);
-            saveFile.writeObject(waitingList3);
+            saveFile.writeObject(waitingList1); // write waitingList1(Booth[]) array to file
+            saveFile.writeObject(waitingList2); // write waitingList2(Booth[]) array to file
+            saveFile.writeObject(waitingList3); // write waitingList3(Booth[]) array to file
 
             System.out.println("File Saved Successfully!");
         } catch (Exception e) {
@@ -448,9 +448,9 @@ public class VaccinationCenter {
                 vaccineCount = savedFile.readInt(); // Read vaccine Count from file
                 booth = (Booth[]) savedFile.readObject(); // Read vaccinationBooth(String[]) array from file
                 isEditable = (boolean[]) savedFile.readObject(); // Read isEditable(boolean[]) array from file
-                waitingList1 = (LinkedList<Booth>) savedFile.readObject();
-                waitingList2 = (LinkedList<Booth>) savedFile.readObject();
-                waitingList3 = (LinkedList<Booth>) savedFile.readObject();
+                waitingList1 = (LinkedList<Booth>) savedFile.readObject(); //Read waitingList1 from file
+                waitingList2 = (LinkedList<Booth>) savedFile.readObject(); //Read waitingList2 from file
+                waitingList3 = (LinkedList<Booth>) savedFile.readObject(); //Read waitingList3 from file
 
 
                 System.out.println("File Loaded Successfully!");
