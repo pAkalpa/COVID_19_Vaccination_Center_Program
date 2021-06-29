@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class VaccinationCenter {
-    private static Booth[] booth = new Booth[6];
+    private static Booth[] booth = new Booth[6]; // Array of Booth Objects
     private static int vaccineCount = 150; // Center vaccine Count
     private static final Scanner scanner = new Scanner(System.in); // Create scanner object from Scanner Class
     private static boolean[] isEditable = new boolean[6]; // Create array to is booth occupied or not
