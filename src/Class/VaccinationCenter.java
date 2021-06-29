@@ -23,6 +23,7 @@ public class VaccinationCenter {
      * @param args None
      */
     public static void main(String[] args) {
+        asciiArt(); // Invoke Ascii Art Print Method(Easter Egg)
         initialise(); // Invoke initialise method
         mainMenu(); // Invoke MainMenuRender Method
     }
@@ -548,5 +549,17 @@ public class VaccinationCenter {
             returnChar = 'N';
         }
         return returnChar;
+    }
+
+    /**
+     * This Method Prints Welcome ASCII Art
+     */
+    private static void asciiArt() {
+        String art = "\t\t\t█───█─▄▀▀─█───▄▀▀─▄▀▀▄─█▄─▄█─▄▀▀"
+                .concat("\n\t\t\t█───█─█───█───█───█──█─█▀▄▀█─█──")
+                .concat("\n\t\t\t█───█─█▀▀─█───█───█──█─█─▀─█─█▀▀")
+                .concat("\n\t\t\t█▄█▄█─█───█───█───█──█─█───█─█──")
+                .concat("\n\t\t\t─▀─▀───▀▀──▀▀──▀▀──▀▀──▀───▀──▀▀");
+        System.out.println(art);
     }
 }

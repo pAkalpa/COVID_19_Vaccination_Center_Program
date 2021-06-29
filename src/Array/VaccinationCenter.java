@@ -22,6 +22,7 @@ public class VaccinationCenter {
      * @param args None
      */
     public static void main(String[] args) {
+        asciiArt();
         initialise(); // Invoke initialise method
         mainMenu(); // Invoke MainMenuRender Method
     }
@@ -425,5 +426,14 @@ public class VaccinationCenter {
             returnChar = 'N';
         }
         return returnChar;
+    }
+
+    private static void asciiArt() {
+        String art = "\t\t\t█───█─▄▀▀─█───▄▀▀─▄▀▀▄─█▄─▄█─▄▀▀"
+                .concat("\n\t\t\t█───█─█───█───█───█──█─█▀▄▀█─█──")
+                .concat("\n\t\t\t█───█─█▀▀─█───█───█──█─█─▀─█─█▀▀")
+                .concat("\n\t\t\t█▄█▄█─█───█───█───█──█─█───█─█──")
+                .concat("\n\t\t\t─▀─▀───▀▀──▀▀──▀▀──▀▀──▀───▀──▀▀");
+        System.out.println(art);
     }
 }
