@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -74,13 +73,19 @@ public class VaccinationCenter {
      * @param code User Input String
      */
     private static void mainMenuInputValidation(String code) {
+        boolean validInput = false;
         String[] validInputArray = {"100", "VVB", "101", "VEB", "102", "APB", "103", "RPB", "104", "VPS", "105",
                 "SPD", "106", "LPD", "107", "VRV", "108", "AVS", "999", "EXT"}; // valid Inputs hard coded into string array
-        int index;
-        List<String> validInputList = Arrays.asList(validInputArray);
+        int index = 0;
 
-        if (validInputList.contains(code)) {
-            index = validInputList.indexOf(code);
+        for (int i = 0; i < validInputArray.length; i++) {
+            if (code.equals(validInputArray[i])) {
+                validInput = true;
+                index = i;
+            }
+        }
+
+        if (validInput) {
             switch (index) { // switch case of valid input index
                 // 100 or VVB
                 case 0, 1 -> viewAllBooths();
