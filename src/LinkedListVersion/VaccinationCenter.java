@@ -1,4 +1,4 @@
-package Class;
+package LinkedListVersion;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -169,10 +169,9 @@ public class VaccinationCenter {
             }
 
             viewAllEmptyBooths(); // invoke viewAllEmptyBooths Method
-            addPatientDetails(); // invoke addPatientDetails Method
 
             if (returnChar == 'N') {
-                System.out.println("All booths Are Occupied!\tNew Patients Will be Added to Waiting List");
+                System.out.println("New Patients Will be Added to Waiting List");
                 do { // this loop validates user input
                     String inputPattern = "[YN]+"; // valid user input as regex expression
                     System.out.print("Do You Want to add Another Person?(Y/n) ");
@@ -183,7 +182,7 @@ public class VaccinationCenter {
                 if (option.equals("N")) {
                     break;
                 }
-            } else if (returnChar == 'Y') {
+            } else if (returnChar == ' ') {
                 do { // this loop validates user input
                     String inputPattern = "[YN]+";
                     System.out.print("\nDo You Want to Go back to Main Menu?(Y/n) ");
@@ -195,6 +194,7 @@ public class VaccinationCenter {
                     break;
                 }
             }
+            addPatientDetails(); // invoke addPatientDetails Method
         }
         System.out.println("Back to Main Menu....");
     }
