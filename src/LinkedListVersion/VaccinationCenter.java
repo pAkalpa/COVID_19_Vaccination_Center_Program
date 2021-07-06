@@ -354,6 +354,12 @@ public class VaccinationCenter {
             patientNameArray[i] = booth[i].getFirstName().substring(0,1).toUpperCase() + booth[i].getFirstName().substring(1);
         }
         String[] newArray = Arrays.copyOf(patientNameArray, arrayLength);
+        /*
+         * ritikasharma23
+         * 24/06/2021
+         * Java Program to Sort Names in an Alphabetical Order
+         * https://www.geeksforgeeks.org/java-program-to-sort-names-in-an-alphabetical-order/
+         * */
         for (int i = 0; i < newArray.length; i++) {
             for (int j = i + 1; j < newArray.length; j++) {
                 if (newArray[i].compareTo(newArray[j]) > 0) {

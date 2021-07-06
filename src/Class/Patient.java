@@ -23,7 +23,7 @@ public class Patient implements Serializable {
     public Patient(String surname, int age, String city, String idNumber, int vaccineType) {
         this.surname = surname;
         this.age = age;
-        City = city;
+        this.City = city;
         this.idNumber = idNumber;
         this.vaccineType = vaccineType;
     }
