@@ -2,6 +2,9 @@ package Class;
 
 import java.io.Serializable;
 
+/**
+ * Make Booth class Serializable for Save Data as Objects
+ */
 public class Patient implements Serializable {
     private String surname;
     private int age;
@@ -9,6 +12,14 @@ public class Patient implements Serializable {
     private String idNumber;
     private int vaccineType;
 
+    /**
+     * Patient Class Constructor
+     * @param surname String
+     * @param age integer
+     * @param city String
+     * @param idNumber String
+     * @param vaccineType integer
+     */
     public Patient(String surname, int age, String city, String idNumber, int vaccineType) {
         this.surname = surname;
         this.age = age;
