@@ -386,31 +386,35 @@ public class VaccinationCenter {
      * Saving (Vaccine Count , Vaccination Booth Array, isEditable Array)
      */
     private static void saveProgramData() {
-        try {
-            System.out.println("File Saving....");
-            File file = new File("./saveData/"); // create new File object
+        if (!(boothChecker() == 'Y')) {
+            try {
+                System.out.println("File Saving....");
+                File file = new File("./saveData/"); // create new File object
 
-            if (!file.exists()) {
-                Files.createDirectory(Path.of("./saveData/"));
+                if (!file.exists()) {
+                    Files.createDirectory(Path.of("./saveData/"));
+                }
+
+                String saveFilename = new SimpleDateFormat("yyyyMMdd_HHmmss'.dat'").format(new Date()); // use date and time as unique name for save files
+                String saveFilePath = "./saveData/" + saveFilename; // file name concatenated with file path
+
+                FileOutputStream saveDataFile = new FileOutputStream(saveFilePath); // create new FileOutputStream object and parse saveFilePath string as argument
+                ObjectOutputStream saveFile = new ObjectOutputStream(saveDataFile); // create new ObjectOutputStream object and parse saveDataFile object as argument
+
+                saveFile.writeInt(vaccineCount); // write vaccine count to file
+                saveFile.writeObject(booth); // write vaccinationBooth(String[]) array to file
+                saveFile.writeObject(isEditable); // write isEditable(boolean[]) array to file
+                saveFile.writeObject(waitingList1); // write waitingList1(Booth[]) array to file
+                saveFile.writeObject(waitingList2); // write waitingList2(Booth[]) array to file
+                saveFile.writeObject(waitingList3); // write waitingList3(Booth[]) array to file
+
+                System.out.println("File Saved Successfully!");
+            } catch (Exception e) {
+                System.out.println("Oops! Something went Wrong.");
+                e.printStackTrace();
             }
-
-            String saveFilename = new SimpleDateFormat("yyyyMMdd_HHmmss'.dat'").format(new java.util.Date()); // use date and time as unique name for save files
-            String saveFilePath = "./saveData/" + saveFilename; // file name concatenated with file path
-
-            FileOutputStream saveDataFile = new FileOutputStream(saveFilePath); // create new FileOutputStream object and parse saveFilePath string as argument
-            ObjectOutputStream saveFile = new ObjectOutputStream(saveDataFile); // create new ObjectOutputStream object and parse saveDataFile object as argument
-
-            saveFile.writeInt(vaccineCount); // write vaccine count to file
-            saveFile.writeObject(booth); // write vaccinationBooth(String[]) array to file
-            saveFile.writeObject(isEditable); // write isEditable(boolean[]) array to file
-            saveFile.writeObject(waitingList1); // write waitingList1(Booth[]) array to file
-            saveFile.writeObject(waitingList2); // write waitingList2(Booth[]) array to file
-            saveFile.writeObject(waitingList3); // write waitingList3(Booth[]) array to file
-
-            System.out.println("File Saved Successfully!");
-        } catch (Exception e) {
-            System.out.println("Oops! Something went Wrong.");
-            e.printStackTrace();
+        } else {
+            System.out.println("All Booths Are Empty\nNothing to Save.");
         }
     }
 
