@@ -321,7 +321,7 @@ public class VaccinationCenter {
         int arrayLength = booth.length; // store length of vaccinationBooth(String[]) array
         String[] patientNameArray = new String[arrayLength];
         for (int i = 0; i < arrayLength; i++) {
-            patientNameArray[i] = booth[i].getFirstName();
+            patientNameArray[i] = booth[i].getFirstName().substring(0,1).toUpperCase() + booth[i].getFirstName().substring(1);
         }
         String[] newArray = Arrays.copyOf(patientNameArray, arrayLength);
         /*

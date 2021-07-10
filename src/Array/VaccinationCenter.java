@@ -246,7 +246,11 @@ public class VaccinationCenter {
         String temporaryString;
         int occupiedBoothCount = 0;
         int arrayLength = vaccinationBooth.length; // store length of vaccinationBooth(String[]) array
-        String[] newArray = Arrays.copyOf(vaccinationBooth, arrayLength);
+        String[] patientNameArray = new String[arrayLength];
+        for (int i = 0; i < arrayLength; i++) {
+            patientNameArray[i] = vaccinationBooth[i].substring(0,1).toUpperCase() + vaccinationBooth[i].substring(1);
+        }
+        String[] newArray = Arrays.copyOf(patientNameArray, arrayLength);
         /*
         * ritikasharma23
         * 24/06/2021
@@ -263,7 +267,7 @@ public class VaccinationCenter {
             }
         }
         for (String s : newArray) {
-            int index = Arrays.asList(vaccinationBooth).indexOf(s);
+            int index = Arrays.asList(patientNameArray).indexOf(s);
             if (!s.equals("*")) { // check for occupied booths
                 System.out.println(s + " (Booth NO " + index + ")");
                 occupiedBoothCount++;
