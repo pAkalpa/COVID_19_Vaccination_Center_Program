@@ -238,7 +238,7 @@ public class VaccinationCenter {
         do { // validates user input 1 to 3
             System.out.print("Enter Vaccine Type Number (1 - 3): ");
             while (!scanner.hasNextInt()) {
-                System.out.println("Invalid Input! Try Again.\nEnter Vaccine Type Number (1 - 3): ");
+                System.out.print("Invalid Input! Try Again.\nEnter Vaccine Type Number (1 - 3): ");
                 scanner.next();
             }
             vaccineType = scanner.nextInt();
