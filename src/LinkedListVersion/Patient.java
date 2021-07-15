@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Make Booth class Serializable for Save Data as Objects
  */
-public class Patient implements Serializable {
+public class Patient extends Booth implements Serializable {
     private String surname;
     private int age;
     private String City;
@@ -14,13 +14,15 @@ public class Patient implements Serializable {
 
     /**
      * Patient Class Constructor
+     * @param firstName String
      * @param surname String
      * @param age integer
      * @param city String
      * @param idNumber String
      * @param vaccineType integer
      */
-    public Patient(String surname, int age, String city, String idNumber, int vaccineType) {
+    public Patient(String firstName,String surname, int age, String city, String idNumber, int vaccineType) {
+        super(firstName);
         this.surname = surname;
         this.age = age;
         this.City = city;
