@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class VaccinationCenter {
-    private static Booth[] booth = new Booth[6]; // Array of Booth Objects
+    private static Patient[] booth = new Patient[6]; // Array of Booth Objects
     private static int vaccineCount = 150; // Center vaccine Count
     private static final Scanner scanner = new Scanner(System.in); // Create scanner object from Scanner Class
     private static boolean[] isEditable = new boolean[6]; // Create array to is booth occupied or not
@@ -18,7 +18,6 @@ public class VaccinationCenter {
 
     /**
      * Main Method Invoke two methods
-     *
      * @param args None
      */
     public static void main(String[] args) {
@@ -30,9 +29,8 @@ public class VaccinationCenter {
      * Initialise String array as empty beginning of the program
      */
     private static void initialise() {
-        Patient patient = new Patient("*", 0, "*", "*", 0);
         for (int i = 0; i < 6; i++) {
-            booth[i] = new Booth("*", patient);
+            booth[i] = new Patient("*", "*" ,0, "*", "*", 0);
             isEditable[i] = true; // add true as array elements
         }
     }
@@ -243,30 +241,29 @@ public class VaccinationCenter {
         }
 
         vaccineCount--; // subtract 1 from vaccine count for each successful user adding
-        Patient patient = new Patient(Surname, age, city, idNumber, vaccineType); // create new Patient object
 
         if (vaccineType == 1) { // validate vaccine type and auto assign user to booth 0 or 1
             if (isEditable[0]) {
-                booth[0] = new Booth(firstName,patient); // add patient to booth 0
+                booth[0] = new Patient(firstName,Surname, age, city, idNumber, vaccineType); // add patient to booth 0
                 isEditable[0] = false;
             } else {
-                booth[1] = new Booth(firstName,patient); // add patient to booth 1
+                booth[1] = new Patient(firstName,Surname, age, city, idNumber, vaccineType); // add patient to booth 1
                 isEditable[1] = false;
             }
         } else if (vaccineType == 2) { // validate vaccine type and auto assign user to booth 2 or 3
             if (isEditable[2]) {
-                booth[2] = new Booth(firstName, patient); // add patient to booth 2
+                booth[2] = new Patient(firstName,Surname, age, city, idNumber, vaccineType); // add patient to booth 2
                 isEditable[2] = false;
             } else {
-                booth[3] = new Booth(firstName, patient); // add patient to booth 3
+                booth[3] = new Patient(firstName,Surname, age, city, idNumber, vaccineType); // add patient to booth 3
                 isEditable[3] = false;
             }
         } else {
             if (isEditable[4]) { // validate vaccine type and auto assign user to booth 4 or 5
-                booth[4] = new Booth(firstName, patient); // add patient to booth 4
+                booth[4] = new Patient(firstName,Surname, age, city, idNumber, vaccineType); // add patient to booth 4
                 isEditable[4] = false;
             } else {
-                booth[5] = new Booth(firstName, patient); // add patient to booth 5
+                booth[5] = new Patient(firstName,Surname, age, city, idNumber, vaccineType); // add patient to booth 5
                 isEditable[5] = false;
             }
         }
@@ -299,6 +296,11 @@ public class VaccinationCenter {
             if (boothNumber <= 5) {
                 if (!booth[boothNumber].getFirstName().equals("*")) {
                     booth[boothNumber].setFirstName("*");
+                    booth[boothNumber].setSurname("*");
+                    booth[boothNumber].setAge(0);
+                    booth[boothNumber].setCity("*");
+                    booth[boothNumber].setIdNumber("*");
+                    booth[boothNumber].setVaccineType(0);
                     isEditable[boothNumber] = true;
                     System.out.println("Remove Successful!");
                 } else {
@@ -424,7 +426,7 @@ public class VaccinationCenter {
                 ObjectInputStream savedFile = new ObjectInputStream(savedDataFile); // Create new ObjectInputStream object and parse savedDataFile object as argument
 
                 vaccineCount = savedFile.readInt(); // Read vaccine Count from file
-                booth = (Booth[]) savedFile.readObject(); // Read vaccinationBooth(String[]) array from file
+                booth = (Patient[]) savedFile.readObject(); // Read vaccinationBooth(String[]) array from file
                 isEditable = (boolean[]) savedFile.readObject(); // Read isEditable(boolean[]) array from file
 
                 System.out.println("File Loaded Successfully!");
