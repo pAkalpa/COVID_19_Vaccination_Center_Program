@@ -69,4 +69,14 @@ public class Patient extends Booth implements Serializable {
     public void setVaccineType(int vaccineType) {
         this.vaccineType = vaccineType;
     }
+
+    public void showPatientInfo() {
+        String vaccineName = switch (vaccineType) {
+            case 1 -> "AstraZeneca";
+            case 2 -> "Sinopharm";
+            case 3 -> "Pfizer";
+            default -> "";
+        };
+        System.out.println("First Name: " + super.getFirstName() + "\nSurname: " + surname + "\nAge: " + age + "\nCurrent Living City: " + City + "\nNIC\\Passport No: " + idNumber + "\nVaccine Type: " + vaccineName + "\n");
+    }
 }

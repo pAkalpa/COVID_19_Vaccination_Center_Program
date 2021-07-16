@@ -55,6 +55,7 @@ public class VaccinationCenter {
                     .concat("\n| 106 or LPD |\tLoad Program Data from file                |")
                     .concat("\n| 107 or VRV |\tView Remaining Vaccinations                |")
                     .concat("\n| 108 or AVS |\tAdd Vaccinations to the Stock              |")
+                    .concat("\n| 109 or PDL |\tShow Patient Details List                  |")
                     .concat("\n| 999 or EXT |\tExit the Program                           |")
                     .concat("\n------------------------------------------------------------")
                     .concat("\nChoose Option: "); // Console Main Menu String
@@ -75,7 +76,7 @@ public class VaccinationCenter {
      */
     private static void mainMenuInputValidation(String code) {
         String[] validInputArray = {"100", "VVB", "101", "VEB", "102", "APB", "103", "RPB", "104", "VPS", "105",
-                "SPD", "106", "LPD", "107", "VRV", "108", "AVS", "999", "EXT"}; // valid Inputs hard coded into string array
+                "SPD", "106", "LPD", "107", "VRV", "108", "AVS", "109", "PDL", "999", "EXT"}; // valid Inputs hard coded into string array
         int index;
         List<String> validInputList = Arrays.asList(validInputArray);
 
@@ -100,7 +101,9 @@ public class VaccinationCenter {
                 case 14, 15 -> viewRemainingVaccines();
                 //108 or AVS
                 case 16, 17 -> addVaccinesToStock();
-                case 18, 19 -> isValid = false;
+                //109 or PDL
+                case 18, 19 -> showPatientList();
+                case 20, 21 -> isValid = false;
             }
         } else {
             isValid = true;
@@ -514,6 +517,25 @@ public class VaccinationCenter {
         System.out.println("\nVaccine Stock Summary");
         int requiredVaccineCount = 150 - vaccineCount;
         System.out.println("Vaccination Center Vaccine Capacity: 150 Vaccines\nVaccines Remaining: " + vaccineCount + " Vaccines\nVaccines Required: " + requiredVaccineCount + " Vaccines");
+    }
+
+    /**
+     * This Method Prints List of Patient Details
+     */
+    private static void showPatientList() {
+        int n = 1;
+        if (!(boothChecker() == 'Y')) {
+            System.out.println("\nList of Patient Details");
+            for (int i = 0; i < booth.length; i++) {
+                if (!isEditable[i]) {
+                    System.out.println("Patient #" + n + " Booth #" + i);
+                    booth[i].showPatientInfo();
+                    n++;
+                }
+            }
+        } else {
+            System.out.println("All booths are empty!\nNothing to show\n\t¯\\_(ツ)_/¯");
+        }
     }
 
     /**
