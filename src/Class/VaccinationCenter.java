@@ -208,10 +208,10 @@ public class VaccinationCenter {
                 scanner.next();
             }
             age = scanner.nextInt();
-            if (age < 0 || age > 110) {
+            if (age < 10 || age > 110) {
                 System.out.println("Invalid Input! Try Again.");
             }
-        } while (age < 0 || age > 110);
+        } while (age < 10 || age > 110);
 
         System.out.print("Enter Patient's Current Living City: ");
         city = scanner.next();
