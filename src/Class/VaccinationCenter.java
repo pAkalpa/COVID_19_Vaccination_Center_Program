@@ -204,12 +204,12 @@ public class VaccinationCenter {
         do { // validates Patients Age in given range and valid
             System.out.print("Enter Patient's Age: ");
             while (!scanner.hasNextInt()) {
-                System.out.print("Invalid Input! Try Again.\nEnter Patient's Age: ");
+                System.out.print("Age is Out of Valid Range(Valid Age = 10 - 110)\nEnter Patient's Age: ");
                 scanner.next();
             }
             age = scanner.nextInt();
             if (age < 10 || age > 110) {
-                System.out.println("Invalid Input! Try Again.");
+                System.out.println("Age is Out of Valid Range(Valid Age = 10 - 110)");
             }
         } while (age < 10 || age > 110);
 
