@@ -305,7 +305,6 @@ public class VaccinationCenter {
                 System.out.println("File Saved Successfully!");
             } catch (Exception e) {
                 System.out.println("Oops! Something went Wrong.");
-                e.printStackTrace();
             }
         } else {
             System.out.println("All Booths Are Empty\nNothing to Save.");
