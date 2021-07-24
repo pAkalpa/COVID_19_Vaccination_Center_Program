@@ -357,7 +357,6 @@ public class VaccinationCenter {
             }
         } catch (Exception e) {
             System.out.println("Oops! Something went Wrong.");
-            e.printStackTrace();
         }
     }
 
